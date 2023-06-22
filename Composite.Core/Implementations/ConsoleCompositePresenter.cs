@@ -5,7 +5,7 @@ namespace Composite.Core.Implementations;
 
 public class ConsoleCompositePresenter : ICompositePresenter
 {
-    private int indentation = 0;
+    private int level = 0;
 
     public string Display(string name, List<IComponent> children, int count, string type)
     {
@@ -18,28 +18,36 @@ public class ConsoleCompositePresenter : ICompositePresenter
 
     private void AppendHeader(StringBuilder sb, string name, int count)
     {
-        sb.Append(new String('\t', indentation));
-        sb.Append(name);
-        sb.Append($" ({count} books)");
+        if (level > 0)
+        {
+            sb.Append(new String('-', level * 2));
+            sb.Append(" ");
+        }
+        sb.Append($"{name} ({count} books)");
         sb.Append(Environment.NewLine);
     }
 
     private void AppendBody(StringBuilder sb, List<IComponent> children)
     {
-        indentation++;
+        level++;
         foreach (var child in children)
         {
-            sb.Append(new String('\t', indentation));
+            sb.Append(new String(' ', level * 2));
             sb.Append(child.Display());
             sb.Append(Environment.NewLine);
         }
-        indentation--;
+        level--;
     }
 
     private void AppendFooter(StringBuilder sb, string type)
     {
-        sb.Append(new String('\t', indentation));
+        if (level > 0)
+        {
+            sb.Append(new String('-', level * 2));
+            sb.Append(" ");
+        }
         sb.Append($"Type: {type}");
         sb.Append(Environment.NewLine);
+        sb.Append(Environment.NewLine); // Añadimos un salto de línea adicional para separar mejor las secciones
     }
 }

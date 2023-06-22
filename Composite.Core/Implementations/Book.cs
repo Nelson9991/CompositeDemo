@@ -14,7 +14,7 @@ public class Book : IComponent
 
     public int Count() => 1;
 
-    public string Display() => $"{Title} <small class=\"text-muted\">({Type})</small>";
+    public string Display() => $"{Title} - ({Type})";
 
     public void Add(IComponent bookComponent) => throw new NotSupportedException();
 
